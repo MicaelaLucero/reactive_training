@@ -13,11 +13,29 @@ Seguí estos pasos para levantar la aplicación y realizar pruebas locales:
    cd reactive_training
    ```
 
-2. **Levantá los servicios con Docker Compose**  
-   Asegurate de tener Docker instalado y ejecutá:
+2. **Ejecución con imagen publicada en Docker Hub**
+
+La API utiliza la imagen publicada en Docker Hub, por lo que **no es necesario construir la imagen localmente**. Solo ejecutá:
    ```bash
-   docker-compose up
+      docker-compose up
    ```
+
+Esto descargará la imagen desde Docker Hub y levantará automáticamente todos los servicios necesarios:
+
+- PostgreSQL
+- Redis
+- MongoDB
+- Kafka + Zookeeper
+- La API desarrollada
+
+Para detener los contenedores:
+
+   ```bash
+      docker-compose down
+   ```
+
+> 💡 Asegurate de tener Docker en funcionamiento antes de ejecutar los comandos.
+
 
 3. **Verificá que los servicios estén activos**  
    Podés hacer un GET a:
@@ -25,7 +43,7 @@ Seguí estos pasos para levantar la aplicación y realizar pruebas locales:
    http://localhost:8083/learning-reactive/external-api/integrations
    ```
 
-4. **Probá los endpoints con Postman o herramienta similar**  
+4. **Probá los endpoints con Postman**  
    Descarga el archivo desde la raíz del proyecto e importa en Postman: reactive_challenge.postman_collection.json
 
 
