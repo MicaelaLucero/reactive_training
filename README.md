@@ -51,7 +51,7 @@ Para detener los contenedores:
     - Desde IntelliJ / VSCode: `Run All Tests`
     - Desde consola:
    ```bash
-   ./gradlew test
+   gradle test
    ```
 ---
 
