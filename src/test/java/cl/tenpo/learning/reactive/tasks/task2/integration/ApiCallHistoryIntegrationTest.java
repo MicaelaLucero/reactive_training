@@ -1,28 +1,21 @@
 package cl.tenpo.learning.reactive.tasks.task2.integration;
 
-import cl.tenpo.learning.reactive.tasks.task2.T2Application;
+import static cl.tenpo.learning.reactive.tasks.task2.util.Constants.HEADER_USER_ID;
+
 import cl.tenpo.learning.reactive.tasks.task2.entity.AuthorizedUser;
 import cl.tenpo.learning.reactive.tasks.task2.entity.UserRole;
 import cl.tenpo.learning.reactive.tasks.task2.repository.AuthorizedUserRepository;
-import cl.tenpo.learning.reactive.tasks.task2.testConfig.E2ETestConfiguration;
 import java.util.Objects;
+import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
-import java.util.UUID;
-
-import static cl.tenpo.learning.reactive.tasks.task2.util.Constants.HEADER_USER_ID;
-
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ActiveProfiles("test")
 public class ApiCallHistoryIntegrationTest {
 

@@ -1,6 +1,10 @@
 package cl.tenpo.learning.reactive.tasks.task2.cache.impl;
 
+import static cl.tenpo.learning.reactive.tasks.task2.util.Constants.CACHE_KEY;
+import static org.mockito.Mockito.*;
+
 import cl.tenpo.learning.reactive.tasks.task2.cache.PercentageCacheService;
+import java.time.Duration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -9,11 +13,6 @@ import org.springframework.data.redis.core.ReactiveRedisTemplate;
 import org.springframework.data.redis.core.ReactiveValueOperations;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
-
-import java.time.Duration;
-
-import static cl.tenpo.learning.reactive.tasks.task2.util.Constants.CACHE_KEY;
-import static org.mockito.Mockito.*;
 
 class PercentageCacheServiceImplTest {
 

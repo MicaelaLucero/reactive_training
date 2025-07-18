@@ -3,27 +3,22 @@ package cl.tenpo.learning.reactive.tasks.task2.integration;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
-import cl.tenpo.learning.reactive.tasks.task2.T2Application;
-import cl.tenpo.learning.reactive.tasks.task2.dto.CalculationRequest;
-import cl.tenpo.learning.reactive.tasks.task2.client.PercentageClient;
 import cl.tenpo.learning.reactive.tasks.task2.cache.PercentageCacheService;
+import cl.tenpo.learning.reactive.tasks.task2.client.PercentageClient;
+import cl.tenpo.learning.reactive.tasks.task2.dto.CalculationRequest;
 import cl.tenpo.learning.reactive.tasks.task2.event.RetryEventPublisher;
 import cl.tenpo.learning.reactive.tasks.task2.exception.ExternalServiceException;
-import cl.tenpo.learning.reactive.tasks.task2.testConfig.E2ETestConfiguration;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
 
-@SpringBootTest(
-    webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-    classes = {T2Application.class, E2ETestConfiguration.class})
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 @AutoConfigureWebTestClient
 class CalculationIntegrationTest {
@@ -79,18 +74,22 @@ class CalculationIntegrationTest {
   void shouldUseCachedPercentageWhenClientFails() {
     CalculationRequest request = new CalculationRequest(10.0, 5.0);
 
-    when(percentageClient.getPercentage()).thenReturn(Mono.error(new ExternalServiceException("API down")));
+    when(percentageClient.getPercentage())
+        .thenReturn(Mono.error(new ExternalServiceException("API down")));
     when(retryEventPublisher.sendError(anyString())).thenReturn(Mono.empty());
     when(cache.get()).thenReturn(Mono.just(20.0));
 
-    webTestClient.post()
-                 .uri("/calculation")
-                 .contentType(MediaType.APPLICATION_JSON)
-                 .bodyValue(request)
-                 .exchange()
-                 .expectStatus().isOk()
-                 .expectBody()
-                 .jsonPath("$.result").isEqualTo(18.0);
+    webTestClient
+        .post()
+        .uri("/calculation")
+        .contentType(MediaType.APPLICATION_JSON)
+        .bodyValue(request)
+        .exchange()
+        .expectStatus()
+        .isOk()
+        .expectBody()
+        .jsonPath("$.result")
+        .isEqualTo(18.0);
   }
 
   @Test
@@ -102,32 +101,39 @@ class CalculationIntegrationTest {
     when(cache.get()).thenReturn(Mono.just(30.0));
     when(retryEventPublisher.sendError(anyString())).thenReturn(Mono.empty());
 
-    webTestClient.post()
-                 .uri("/calculation")
-                 .contentType(MediaType.APPLICATION_JSON)
-                 .bodyValue(request)
-                 .exchange()
-                 .expectStatus().isOk()
-                 .expectBody()
-                 .jsonPath("$.result").isEqualTo(26.0);
+    webTestClient
+        .post()
+        .uri("/calculation")
+        .contentType(MediaType.APPLICATION_JSON)
+        .bodyValue(request)
+        .exchange()
+        .expectStatus()
+        .isOk()
+        .expectBody()
+        .jsonPath("$.result")
+        .isEqualTo(26.0);
   }
 
   @Test
   void shouldFallbackToCacheAndFailWhenNoCacheAvailable() {
     CalculationRequest request = new CalculationRequest(10.0, 5.0);
 
-    when(percentageClient.getPercentage()).thenReturn(Mono.error(new ExternalServiceException("API down")));
+    when(percentageClient.getPercentage())
+        .thenReturn(Mono.error(new ExternalServiceException("API down")));
     when(retryEventPublisher.sendError(anyString())).thenReturn(Mono.empty());
     when(cache.get()).thenReturn(Mono.empty());
 
-    webTestClient.post()
-                 .uri("/calculation")
-                 .contentType(MediaType.APPLICATION_JSON)
-                 .bodyValue(request)
-                 .exchange()
-                 .expectStatus().is5xxServerError()
-                 .expectBody()
-                 .jsonPath("$.error").isEqualTo("No cached percentage available");
+    webTestClient
+        .post()
+        .uri("/calculation")
+        .contentType(MediaType.APPLICATION_JSON)
+        .bodyValue(request)
+        .exchange()
+        .expectStatus()
+        .is5xxServerError()
+        .expectBody()
+        .jsonPath("$.error")
+        .isEqualTo("No cached percentage available");
   }
 
   @Test
@@ -140,13 +146,16 @@ class CalculationIntegrationTest {
     when(retryEventPublisher.sendError(anyString()))
         .thenReturn(Mono.error(new RuntimeException("Kafka is down")));
 
-    webTestClient.post()
-                 .uri("/calculation")
-                 .contentType(MediaType.APPLICATION_JSON)
-                 .bodyValue(request)
-                 .exchange()
-                 .expectStatus().is5xxServerError()
-                 .expectBody()
-                 .jsonPath("$.error").isEqualTo("Internal Server Error");
+    webTestClient
+        .post()
+        .uri("/calculation")
+        .contentType(MediaType.APPLICATION_JSON)
+        .bodyValue(request)
+        .exchange()
+        .expectStatus()
+        .is5xxServerError()
+        .expectBody()
+        .jsonPath("$.error")
+        .isEqualTo("Internal Server Error");
   }
 }

@@ -54,7 +54,9 @@ dependencies {
 
 test {
     useJUnitPlatform()
-    //exclude 'cl/tenpo/learning/reactive/tasks/task1/**'
+    if (project.hasProperty("skipIntegrationTests")) {
+        exclude '**/*IntegrationTest.class'
+    }
 }
 
 springBoot {
