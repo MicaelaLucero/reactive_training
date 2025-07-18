@@ -37,6 +37,7 @@ dependencies {
 
     implementation (group: 'net.datafaker', name: 'datafaker', version: "$faker")
     implementation (group: 'ch.qos.logback', name: 'logback-classic')
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
 
     runtimeOnly (group: 'org.postgresql', name: 'postgresql')
     runtimeOnly (group: 'org.postgresql', name: 'r2dbc-postgresql')
@@ -54,4 +55,8 @@ dependencies {
 test {
     useJUnitPlatform()
     //exclude 'cl/tenpo/learning/reactive/tasks/task1/**'
+}
+
+springBoot {
+    mainClass = 'cl.tenpo.learning.reactive.tasks.task2.T2Application'
 }
