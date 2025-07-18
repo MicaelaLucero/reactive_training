@@ -39,6 +39,7 @@ services:
     depends_on:
       - zookeeper-lucero
   api-lucero:
+    image: micalucerotenpo/reactive-api:latest
     environment:
       - APPLICATION_PORT=8083
       - POSTGRES_USER=postgresql
@@ -54,7 +55,6 @@ services:
       - REDIS_PORT=6379
       - KAFKA_HOST=kafka-lucero:9092
       - KAFKA_SECURITY_PROTOCOL=PLAINTEXT
-    build: .
     ports:
       - "8083:8083"
     depends_on:
